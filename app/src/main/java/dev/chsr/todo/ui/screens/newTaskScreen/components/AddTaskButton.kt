@@ -36,14 +36,17 @@ fun AddTaskButton(
             contentColor = Color.White
         ),
         onClick = {
-            if (category.value != "" && taskText.value.isNotEmpty())
+            if (category.value != "" && taskText.value.isNotEmpty()) {
                 tasksViewModel.addTask(
                     Task(
                         task = taskText.value,
-                        category = TaskCategory.valueOf(category.value.uppercase()),
+                        category = TaskCategory.valueOf(
+                            category.value.uppercase().split(" ").joinToString("_")
+                        ),
                         status = TaskStatus.INCOMPLETE
                     )
                 )
+            }
         },
         shape = RoundedCornerShape(8.dp)
     ) {

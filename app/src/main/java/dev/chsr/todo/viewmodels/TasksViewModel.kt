@@ -13,24 +13,35 @@ import kotlinx.coroutines.launch
 class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
     private val taskDao = appDatabase.taskDao()
     private val _tasks = MutableStateFlow<List<Task>>(emptyList())
+    private val _tasksByCategory = MutableStateFlow<HashMap<TaskCategory, List<Task>>>(hashMapOf())
     val tasks: StateFlow<List<Task>> = _tasks
+    val tasksByCategory: StateFlow<HashMap<TaskCategory, List<Task>>> = _tasksByCategory
 
     fun addTask(task: Task) {
         viewModelScope.launch {
             taskDao.insert(task)
+            _tasksByCategory.value[task.category] = taskDao.getTasksByCategory(task.category.category)
         }
     }
 
-    fun getTasksByCategory(category: TaskCategory) {
+    fun updateTasks() {
         viewModelScope.launch {
-            taskDao.getTasksByCategory(category.category)
+            _tasks.value = taskDao.getAllTasks()
+            TaskCategory.entries.forEach { category ->
+                _tasksByCategory.value[category] = taskDao.getTasksByCategory(category.category)
+            }
         }
     }
-//    fun printTasks() {
-//        viewModelScope.launch {
-//            taskDao.getAllTasks().forEach { task ->
-//                Log.i("task", "${task.id} ${task.task} ${task.category} ${task.status}")
-//            }
-//        }
-//    }
+
+    fun getTasksByCategory(category: TaskCategory): List<Task> {
+        return tasksByCategory.value[category] ?: emptyList()
+    }
+
+    fun printTasks() {
+        viewModelScope.launch {
+            taskDao.getAllTasks().forEach { task ->
+                Log.i("task", "${task.id} ${task.task} ${task.category} ${task.status}")
+            }
+        }
+    }
 }

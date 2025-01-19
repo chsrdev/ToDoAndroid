@@ -41,12 +41,13 @@ class MainActivity : ComponentActivity() {
                     "tasks"
                 ).build()
                 val tasksViewModel = TasksViewModel(appDatabase)
+                tasksViewModel.updateTasks()
                 Box(modifier = Modifier.fillMaxSize()) {
-                    NavHost(navController = navController, startDestination = "daily") {
+                    NavHost(navController = navController, startDestination = "new") {
                         composable(route = "new") { NewTaskScreen(tasksViewModel) }
-                        composable(route = "daily") { DailyTasksScreen() }
-                        composable(route = "upcoming") { UpcomingTasksScreen() }
-                        composable(route = "inProgress") { InProgressTasksScreen() }
+                        composable(route = "daily") { DailyTasksScreen(tasksViewModel) }
+                        composable(route = "upcoming") { UpcomingTasksScreen(tasksViewModel) }
+                        composable(route = "inProgress") { InProgressTasksScreen(tasksViewModel) }
                     }
                     Row(
                         modifier = Modifier.align(Alignment.BottomCenter),
