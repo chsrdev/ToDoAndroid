@@ -1,7 +1,8 @@
-package dev.chsr.todo.screens.newTaskScreen.components
+package dev.chsr.todo.ui.screens.newTaskScreen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -9,12 +10,15 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import dev.chsr.todo.R
+import dev.chsr.todo.models.TaskCategory
 import dev.chsr.todo.ui.theme.DarkBlue
 import dev.chsr.todo.ui.theme.DarkGreen
 import dev.chsr.todo.ui.theme.DarkMagenta
@@ -22,11 +26,13 @@ import dev.chsr.todo.ui.theme.DarkMagenta
 
 @Composable
 fun DropdownCategoryMenu(
+    choice: MutableState<String>,
+    interactionSource: MutableInteractionSource,
+    focusManager: FocusManager
 ) {
     val expanded = remember { mutableStateOf(false) }
-    val choice = remember { mutableStateOf("Category") }
     val icon = if (expanded.value) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown
-    DropdownCategoryButton(expanded, choice, icon)
+    DropdownCategoryButton(expanded, choice, icon, interactionSource, focusManager)
     DropdownMenu(
         expanded = expanded.value,
         onDismissRequest = { expanded.value = false },

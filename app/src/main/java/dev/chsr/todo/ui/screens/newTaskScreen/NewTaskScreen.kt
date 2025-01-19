@@ -1,4 +1,4 @@
-package dev.chsr.todo.screens.newTaskScreen
+package dev.chsr.todo.ui.screens.newTaskScreen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -18,13 +18,19 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
-import dev.chsr.todo.screens.newTaskScreen.components.AddTaskButton
-import dev.chsr.todo.screens.newTaskScreen.components.DropdownCategoryMenu
-import dev.chsr.todo.screens.newTaskScreen.components.TaskTextField
+import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.chsr.todo.models.Task
+import dev.chsr.todo.models.TaskCategory
+import dev.chsr.todo.models.TaskStatus
+import dev.chsr.todo.ui.screens.newTaskScreen.components.AddTaskButton
+import dev.chsr.todo.ui.screens.newTaskScreen.components.DropdownCategoryMenu
+import dev.chsr.todo.ui.screens.newTaskScreen.components.TaskTextField
+import dev.chsr.todo.viewmodels.TasksViewModel
 
 @Composable
-fun NewTaskScreen() {
+fun NewTaskScreen(tasksViewModel: TasksViewModel = viewModel()) {
     val taskText = remember { mutableStateOf("") }
+    val category = remember { mutableStateOf("Category") }
     val focusRequester = FocusRequester()
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -32,10 +38,8 @@ fun NewTaskScreen() {
     Box(modifier = Modifier
         .fillMaxSize()
         .clickable(
-            indication = null,
-            interactionSource = interactionSource
-        ) { focusManager.clearFocus() }
-    ) {
+            indication = null, interactionSource = interactionSource
+        ) { focusManager.clearFocus() }) {
         Column(
             modifier = Modifier
                 .align(Alignment.Center)
@@ -48,9 +52,9 @@ fun NewTaskScreen() {
                     .focusRequester(focusRequester)
             )
             Spacer(modifier = Modifier.height(8.dp))
-            DropdownCategoryMenu()
+            DropdownCategoryMenu(category, interactionSource, focusManager)
             Spacer(modifier = Modifier.height(3.dp))
-            AddTaskButton()
+            AddTaskButton(category, taskText, tasksViewModel)
         }
     }
 }

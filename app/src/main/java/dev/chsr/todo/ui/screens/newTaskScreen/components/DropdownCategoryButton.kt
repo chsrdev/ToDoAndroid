@@ -1,6 +1,8 @@
-package dev.chsr.todo.screens.newTaskScreen.components
+package dev.chsr.todo.ui.screens.newTaskScreen.components
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +17,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
@@ -27,19 +30,22 @@ import androidx.compose.ui.unit.sp
 fun DropdownCategoryButton(
     expanded: MutableState<Boolean>,
     choice: MutableState<String>,
-    icon: ImageVector
+    icon: ImageVector,
+    interactionSource: MutableInteractionSource,
+    focusManager: FocusManager
 ) {
     Button(
         onClick = { expanded.value = !expanded.value },
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
-//            .shadow(4.dp)
             .border(
                 width = 1.5.dp,
                 color = Color.Black,
                 shape = RoundedCornerShape(8.dp)
-            ),
+            ).clickable(
+                indication = null, interactionSource = interactionSource
+            ) { focusManager.clearFocus() },
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.White,

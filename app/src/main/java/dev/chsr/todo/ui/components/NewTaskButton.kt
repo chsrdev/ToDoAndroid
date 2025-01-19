@@ -1,4 +1,4 @@
-package dev.chsr.todo.components
+package dev.chsr.todo.ui.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color

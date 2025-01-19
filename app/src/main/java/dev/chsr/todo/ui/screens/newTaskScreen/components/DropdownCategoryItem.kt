@@ -1,4 +1,4 @@
-package dev.chsr.todo.screens.newTaskScreen.components
+package dev.chsr.todo.ui.screens.newTaskScreen.components
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
