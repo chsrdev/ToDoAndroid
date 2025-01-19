@@ -9,10 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 
 @Composable
-fun NewTaskScreen() {
+fun DailyTasksScreen() {
     Box(modifier = Modifier.fillMaxSize()) {
         Text(
-            text = "New Task",
+            text = "Everyday Tasks",
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.Center)
         )

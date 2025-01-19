@@ -6,12 +6,12 @@ import dev.chsr.todo.R
 import dev.chsr.todo.ui.theme.DarkBlue
 
 @Composable
-fun EverydayTasksButton(navController: NavController) {
+fun DailyTasksButton(navController: NavController) {
     TaskButton(
         backgroundColor = DarkBlue,
         iconId = R.drawable.calendar_icon,
-        contentDescription = "Everyday Tasks Button Icon",
-        targetDestination = "everyday",
+        contentDescription = "Daily Tasks Button Icon",
+        targetDestination = "daily",
         navController = navController
     )
 }
