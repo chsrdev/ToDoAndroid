@@ -1,19 +1,25 @@
 package dev.chsr.todo.viewmodels
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.chsr.todo.database.AppDatabase
 import dev.chsr.todo.models.Task
 import dev.chsr.todo.models.TaskCategory
+import dev.chsr.todo.models.TaskStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalTime
+import java.util.Date
 
 class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
     private val taskDao = appDatabase.taskDao()
     private val tasks = MutableStateFlow<List<Task>>(emptyList())
     private val tasksByCategory = MutableStateFlow<HashMap<TaskCategory, List<Task>>>(hashMapOf())
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun addTask(task: Task) {
         viewModelScope.launch {
             taskDao.insert(task)
@@ -21,6 +27,30 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun updateDailyTasksStatus() {
+        tasks.value.forEach { task ->
+            if (task.category == TaskCategory.DAILY && task.status == TaskStatus.COMPLETED) {
+                val resetDate = Date()
+                resetDate.hours = task.resetTime.hour
+                resetDate.minutes = task.resetTime.minute
+                resetDate.seconds = 0
+                if (Date().after(resetDate) && task.completedAt.before(resetDate))
+                    updateTask(
+                        Task(
+                            task.id,
+                            task.task,
+                            task.category,
+                            TaskStatus.INCOMPLETE,
+                            task.completedAt,
+                            task.resetTime
+                        )
+                    )
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun updateTask(task: Task) {
         viewModelScope.launch {
             taskDao.updateTask(task)
@@ -28,9 +58,11 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun updateTasks() {
         viewModelScope.launch {
             tasks.value = taskDao.getAllTasks()
+            updateDailyTasksStatus()
             TaskCategory.entries.forEach { category ->
                 tasksByCategory.value[category] = taskDao.getTasksByCategory(category.category)
             }

@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -43,7 +42,8 @@ fun DropdownCategoryButton(
                 width = 1.5.dp,
                 color = Color.Black,
                 shape = RoundedCornerShape(8.dp)
-            ).clickable(
+            )
+            .clickable(
                 indication = null, interactionSource = interactionSource
             ) { focusManager.clearFocus() },
         shape = RoundedCornerShape(8.dp),

@@ -1,5 +1,7 @@
 package dev.chsr.todo.ui.screens.newTaskScreen.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,7 +12,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,14 +22,15 @@ import dev.chsr.todo.models.Task
 import dev.chsr.todo.models.TaskCategory
 import dev.chsr.todo.models.TaskStatus
 import dev.chsr.todo.viewmodels.TasksViewModel
-import java.time.Instant
-import java.time.ZoneId
+import java.time.LocalTime
 import java.util.Date
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddTaskButton(
-    category: MutableState<String>,
-    taskText: MutableState<String>,
+    taskText: String,
+    category: String,
+    resetTime: LocalTime,
     tasksViewModel: TasksViewModel
 ) {
     Button(
@@ -38,15 +40,16 @@ fun AddTaskButton(
             contentColor = Color.White
         ),
         onClick = {
-            if (category.value != "" && taskText.value.isNotEmpty()) {
+            if (category != "" && taskText.isNotEmpty()) {
                 tasksViewModel.addTask(
                     Task(
-                        task = taskText.value,
+                        task = taskText,
                         category = TaskCategory.valueOf(
-                            category.value.uppercase().split(" ").joinToString("_")
+                            category.uppercase().split(" ").joinToString("_")
                         ),
                         status = TaskStatus.INCOMPLETE,
-                        completedAt = Date(System.currentTimeMillis())
+                        completedAt = Date(System.currentTimeMillis()),
+                        resetTime = resetTime
                     )
                 )
             }

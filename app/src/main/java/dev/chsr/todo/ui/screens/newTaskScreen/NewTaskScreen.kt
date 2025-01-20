@@ -1,5 +1,7 @@
 package dev.chsr.todo.ui.screens.newTaskScreen
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -19,18 +21,19 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import dev.chsr.todo.models.Task
-import dev.chsr.todo.models.TaskCategory
-import dev.chsr.todo.models.TaskStatus
 import dev.chsr.todo.ui.screens.newTaskScreen.components.AddTaskButton
 import dev.chsr.todo.ui.screens.newTaskScreen.components.DropdownCategoryMenu
+import dev.chsr.todo.ui.screens.newTaskScreen.components.TaskResetTimePicker
 import dev.chsr.todo.ui.screens.newTaskScreen.components.TaskTextField
 import dev.chsr.todo.viewmodels.TasksViewModel
+import java.time.LocalTime
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NewTaskScreen(tasksViewModel: TasksViewModel = viewModel()) {
     val taskText = remember { mutableStateOf("") }
     val category = remember { mutableStateOf("Category") }
+    val resetTime = remember { mutableStateOf(LocalTime.of(0, 0)) }
     val focusRequester = FocusRequester()
     val focusManager = LocalFocusManager.current
     val interactionSource = remember { MutableInteractionSource() }
@@ -53,8 +56,12 @@ fun NewTaskScreen(tasksViewModel: TasksViewModel = viewModel()) {
             )
             Spacer(modifier = Modifier.height(8.dp))
             DropdownCategoryMenu(category, interactionSource, focusManager)
+            if (category.value == "Daily") {
+                Spacer(modifier = Modifier.height(3.dp))
+                TaskResetTimePicker(resetTime)
+            }
             Spacer(modifier = Modifier.height(3.dp))
-            AddTaskButton(category, taskText, tasksViewModel)
+            AddTaskButton(taskText.value, category.value, resetTime.value, tasksViewModel)
         }
     }
 }

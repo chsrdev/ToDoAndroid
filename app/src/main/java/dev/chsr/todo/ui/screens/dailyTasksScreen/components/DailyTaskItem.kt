@@ -1,5 +1,7 @@
 package dev.chsr.todo.ui.screens.dailyTasksScreen.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,12 +21,16 @@ import androidx.compose.ui.unit.sp
 import dev.chsr.todo.models.Task
 import dev.chsr.todo.models.TaskStatus
 import dev.chsr.todo.viewmodels.TasksViewModel
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DailyTaskItem(_task: Task, tasksViewModel: TasksViewModel) {
     val taskStatusString = remember { mutableStateOf("") }
+    val formatter = DateTimeFormatter.ofPattern("HH:mm")
     var task = _task
 
     fun updateTaskStatusString() {
@@ -35,7 +41,9 @@ fun DailyTaskItem(_task: Task, tasksViewModel: TasksViewModel) {
         val completionMinutes = calendar.get(Calendar.MINUTE)
 
         if (task.status == TaskStatus.COMPLETED)
-            taskStatusString.value += " at $completionHours:$completionMinutes"
+            taskStatusString.value += " at ${
+                LocalTime.of(completionHours, completionMinutes).format(formatter)
+            }"
     }
 
     Card(
@@ -55,7 +63,8 @@ fun DailyTaskItem(_task: Task, tasksViewModel: TasksViewModel) {
                     task.task,
                     task.category,
                     TaskStatus.COMPLETED,
-                    Date(System.currentTimeMillis())
+                    Date(System.currentTimeMillis()),
+                    task.resetTime
                 )
                 tasksViewModel.updateTask(task)
                 updateTaskStatusString()
