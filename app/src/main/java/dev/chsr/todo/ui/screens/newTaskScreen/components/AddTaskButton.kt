@@ -17,11 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.chsr.todo.models.Task
 import dev.chsr.todo.models.TaskCategory
 import dev.chsr.todo.models.TaskStatus
 import dev.chsr.todo.viewmodels.TasksViewModel
+import java.time.Instant
+import java.time.ZoneId
+import java.util.Date
 
 @Composable
 fun AddTaskButton(
@@ -43,7 +45,8 @@ fun AddTaskButton(
                         category = TaskCategory.valueOf(
                             category.value.uppercase().split(" ").joinToString("_")
                         ),
-                        status = TaskStatus.INCOMPLETE
+                        status = TaskStatus.INCOMPLETE,
+                        completedAt = Date(System.currentTimeMillis())
                     )
                 )
             }

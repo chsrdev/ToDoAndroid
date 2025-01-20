@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -19,7 +18,7 @@ import dev.chsr.todo.ui.components.DailyTasksButton
 import dev.chsr.todo.ui.components.InProgressTasksButton
 import dev.chsr.todo.ui.components.NewTaskButton
 import dev.chsr.todo.ui.components.UpcomingTasksButton
-import dev.chsr.todo.ui.screens.DailyTasksScreen
+import dev.chsr.todo.ui.screens.dailyTasksScreen.DailyTasksScreen
 import dev.chsr.todo.ui.screens.InProgressTasksScreen
 import dev.chsr.todo.ui.screens.newTaskScreen.NewTaskScreen
 import dev.chsr.todo.ui.screens.UpcomingTasksScreen

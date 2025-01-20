@@ -1,7 +1,9 @@
 package dev.chsr.todo.models
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
 @Entity(tableName = "tasks")
 data class Task(
@@ -9,5 +11,7 @@ data class Task(
     val id: Int = 0,
     val task: String,
     val category: TaskCategory,
-    val status: TaskStatus
+    val status: TaskStatus,
+    @ColumnInfo("completed_at")
+    val completedAt: Date
 )

@@ -15,7 +15,6 @@ import dev.chsr.todo.viewmodels.TasksViewModel
 @Composable
 fun InProgressTasksScreen(tasksViewModel: TasksViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
-        tasksViewModel.printTasks()
         Column(
             modifier = Modifier.align(Alignment.Center)
         ) {

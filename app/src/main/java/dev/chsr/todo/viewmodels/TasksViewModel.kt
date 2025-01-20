@@ -7,41 +7,37 @@ import dev.chsr.todo.database.AppDatabase
 import dev.chsr.todo.models.Task
 import dev.chsr.todo.models.TaskCategory
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
     private val taskDao = appDatabase.taskDao()
-    private val _tasks = MutableStateFlow<List<Task>>(emptyList())
-    private val _tasksByCategory = MutableStateFlow<HashMap<TaskCategory, List<Task>>>(hashMapOf())
-    val tasks: StateFlow<List<Task>> = _tasks
-    val tasksByCategory: StateFlow<HashMap<TaskCategory, List<Task>>> = _tasksByCategory
+    private val tasks = MutableStateFlow<List<Task>>(emptyList())
+    private val tasksByCategory = MutableStateFlow<HashMap<TaskCategory, List<Task>>>(hashMapOf())
 
     fun addTask(task: Task) {
         viewModelScope.launch {
             taskDao.insert(task)
-            _tasksByCategory.value[task.category] = taskDao.getTasksByCategory(task.category.category)
+            updateTasks()
+        }
+    }
+
+    fun updateTask(task: Task) {
+        viewModelScope.launch {
+            taskDao.updateTask(task)
+            updateTasks()
         }
     }
 
     fun updateTasks() {
         viewModelScope.launch {
-            _tasks.value = taskDao.getAllTasks()
+            tasks.value = taskDao.getAllTasks()
             TaskCategory.entries.forEach { category ->
-                _tasksByCategory.value[category] = taskDao.getTasksByCategory(category.category)
+                tasksByCategory.value[category] = taskDao.getTasksByCategory(category.category)
             }
         }
     }
 
     fun getTasksByCategory(category: TaskCategory): List<Task> {
         return tasksByCategory.value[category] ?: emptyList()
-    }
-
-    fun printTasks() {
-        viewModelScope.launch {
-            taskDao.getAllTasks().forEach { task ->
-                Log.i("task", "${task.id} ${task.task} ${task.category} ${task.status}")
-            }
-        }
     }
 }
