@@ -1,7 +1,6 @@
 package dev.chsr.todo.viewmodels
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +10,8 @@ import dev.chsr.todo.models.TaskCategory
 import dev.chsr.todo.models.TaskStatus
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalTime
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.Date
 
 class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
@@ -31,10 +31,15 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
     private fun updateDailyTasksStatus() {
         tasks.value.forEach { task ->
             if (task.category == TaskCategory.DAILY && task.status == TaskStatus.COMPLETED) {
-                val resetDate = Date()
-                resetDate.hours = task.resetTime.hour
-                resetDate.minutes = task.resetTime.minute
-                resetDate.seconds = 0
+                val resetDate = Date.from(
+                    LocalDateTime.now()
+                        .withHour(task.resetTime.hour)
+                        .withMinute(task.resetTime.minute)
+                        .withSecond(0)
+                        .withNano(0)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()
+                )
                 if (Date().after(resetDate) && task.completedAt.before(resetDate))
                     updateTask(
                         Task(
