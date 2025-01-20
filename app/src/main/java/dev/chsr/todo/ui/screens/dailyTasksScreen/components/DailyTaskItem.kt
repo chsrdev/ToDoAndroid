@@ -2,7 +2,6 @@ package dev.chsr.todo.ui.screens.dailyTasksScreen.components
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -98,7 +96,7 @@ fun DailyTaskItem(_task: Task, tasksViewModel: TasksViewModel) {
                     fontSize = 12.sp,
                 )
                 Text(
-                    modifier = Modifier.padding(start=16.dp),
+                    modifier = Modifier.padding(start = 16.dp),
                     text = "Reset: ${
                         LocalTime.of(task.resetTime.hour, task.resetTime.minute)
                             .format(formatter)
