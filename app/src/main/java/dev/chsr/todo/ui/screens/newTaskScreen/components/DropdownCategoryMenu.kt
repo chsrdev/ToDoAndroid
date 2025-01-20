@@ -27,11 +27,12 @@ import dev.chsr.todo.ui.theme.DarkMagenta
 fun DropdownCategoryMenu(
     choice: MutableState<String>,
     interactionSource: MutableInteractionSource,
-    focusManager: FocusManager
+    focusManager: FocusManager,
+    addTaskBackgroundColor: MutableState<Color>
 ) {
     val expanded = remember { mutableStateOf(false) }
     val icon = if (expanded.value) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown
-    DropdownCategoryButton(expanded, choice, icon, interactionSource, focusManager)
+    DropdownCategoryButton(expanded, choice, icon, interactionSource, addTaskBackgroundColor, focusManager)
     DropdownMenu(
         expanded = expanded.value,
         onDismissRequest = { expanded.value = false },

@@ -14,11 +14,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TaskTextField(taskText: MutableState<String>, modifier: Modifier) {
+fun TaskTextField(
+    taskText: MutableState<String>,
+    modifier: Modifier,
+    addTaskBackgroundColor: MutableState<Color>
+) {
     OutlinedTextField(
         value = taskText.value,
-        onValueChange = { taskText.value = it },
-        label = { Text("Task") },
+        onValueChange = {
+            taskText.value = it
+            addTaskBackgroundColor.value = Color.Black
+        },
+        label = {
+            Text("Task")
+        },
         modifier = modifier,
         textStyle = TextStyle(
             color = Color.Black,

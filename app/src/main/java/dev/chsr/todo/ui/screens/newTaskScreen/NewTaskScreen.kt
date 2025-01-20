@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -36,6 +37,7 @@ fun NewTaskScreen(tasksViewModel: TasksViewModel = viewModel()) {
     val resetTime = remember { mutableStateOf(LocalTime.of(0, 0)) }
     val focusRequester = FocusRequester()
     val focusManager = LocalFocusManager.current
+    val addTaskButtonBackgroundColor = remember { mutableStateOf(Color.Black) }
     val interactionSource = remember { MutableInteractionSource() }
 
     Box(modifier = Modifier
@@ -52,16 +54,28 @@ fun NewTaskScreen(tasksViewModel: TasksViewModel = viewModel()) {
                 taskText,
                 Modifier
                     .fillMaxWidth()
-                    .focusRequester(focusRequester)
+                    .focusRequester(focusRequester),
+                addTaskButtonBackgroundColor
             )
             Spacer(modifier = Modifier.height(8.dp))
-            DropdownCategoryMenu(category, interactionSource, focusManager)
+            DropdownCategoryMenu(
+                category,
+                interactionSource,
+                focusManager,
+                addTaskButtonBackgroundColor
+            )
             if (category.value == "Daily") {
                 Spacer(modifier = Modifier.height(3.dp))
                 TaskResetTimePicker(resetTime)
             }
             Spacer(modifier = Modifier.height(3.dp))
-            AddTaskButton(taskText.value, category.value, resetTime.value, tasksViewModel)
+            AddTaskButton(
+                taskText.value,
+                category.value,
+                resetTime.value,
+                addTaskButtonBackgroundColor,
+                tasksViewModel
+            )
         }
     }
 }

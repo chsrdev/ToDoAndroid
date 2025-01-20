@@ -31,10 +31,14 @@ fun DropdownCategoryButton(
     choice: MutableState<String>,
     icon: ImageVector,
     interactionSource: MutableInteractionSource,
+    addTaskBackgroundColor: MutableState<Color>,
     focusManager: FocusManager
 ) {
     Button(
-        onClick = { expanded.value = !expanded.value },
+        onClick = {
+            expanded.value = !expanded.value
+            addTaskBackgroundColor.value = Color.Black
+        },
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
