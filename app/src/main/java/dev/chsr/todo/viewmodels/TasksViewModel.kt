@@ -13,11 +13,12 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.Date
+import java.util.EnumMap
 
 class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
     private val taskDao = appDatabase.taskDao()
     private val tasks = MutableStateFlow<List<Task>>(emptyList())
-    private val tasksByCategory = MutableStateFlow<HashMap<TaskCategory, List<Task>>>(hashMapOf())
+    private val tasksByCategory = MutableStateFlow(EnumMap<TaskCategory, List<Task>>(TaskCategory::class.java))
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun addTask(task: Task) {
