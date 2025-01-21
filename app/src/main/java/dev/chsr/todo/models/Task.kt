@@ -16,5 +16,7 @@ data class Task(
     @ColumnInfo("completed_at")
     val completedAt: Date,
     @ColumnInfo("reset_time")
-    val resetTime: LocalTime
+    val resetTime: LocalTime,
+    @ColumnInfo("completion_streak")
+    val completionStreak: Int
 )

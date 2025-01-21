@@ -1,9 +1,11 @@
 package dev.chsr.todo.ui
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,35 +14,32 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.room.Room
 import dev.chsr.todo.database.AppDatabase
 import dev.chsr.todo.ui.components.DailyTasksButton
 import dev.chsr.todo.ui.components.InProgressTasksButton
 import dev.chsr.todo.ui.components.NewTaskButton
 import dev.chsr.todo.ui.components.UpcomingTasksButton
-import dev.chsr.todo.ui.screens.dailyTasksScreen.DailyTasksScreen
 import dev.chsr.todo.ui.screens.InProgressTasksScreen
-import dev.chsr.todo.ui.screens.newTaskScreen.NewTaskScreen
 import dev.chsr.todo.ui.screens.UpcomingTasksScreen
+import dev.chsr.todo.ui.screens.dailyTasksScreen.DailyTasksScreen
+import dev.chsr.todo.ui.screens.newTaskScreen.NewTaskScreen
 import dev.chsr.todo.ui.theme.ToDoTheme
 import dev.chsr.todo.viewmodels.TasksViewModel
 
 class MainActivity : ComponentActivity() {
-    lateinit var appDatabase: AppDatabase
+    private lateinit var appDatabase: AppDatabase
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             ToDoTheme {
+                appDatabase = AppDatabase.getInstance(this)
                 val navController = rememberNavController()
-                appDatabase = Room.databaseBuilder(
-                    applicationContext,
-                    AppDatabase::class.java,
-                    "tasks"
-                ).build()
                 val tasksViewModel = TasksViewModel(appDatabase)
                 tasksViewModel.updateTasks()
+
                 Box(modifier = Modifier.fillMaxSize()) {
                     NavHost(navController = navController, startDestination = "new") {
                         composable(route = "new") { NewTaskScreen(tasksViewModel) }

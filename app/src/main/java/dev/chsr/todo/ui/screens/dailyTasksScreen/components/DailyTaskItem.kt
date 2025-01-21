@@ -23,10 +23,13 @@ import androidx.compose.ui.unit.sp
 import dev.chsr.todo.models.Task
 import dev.chsr.todo.models.TaskStatus
 import dev.chsr.todo.viewmodels.TasksViewModel
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -60,13 +63,28 @@ fun DailyTaskItem(_task: Task, tasksViewModel: TasksViewModel) {
         ),
         onClick = {
             if (task.status != TaskStatus.COMPLETED) {
+                val resetDate = Date.from(
+                    LocalDateTime.now()
+                        .withHour(task.resetTime.hour)
+                        .withMinute(task.resetTime.minute)
+                        .withSecond(0)
+                        .withNano(0)
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()
+                )
+                val currentDate = Date(System.currentTimeMillis())
+                val timeBetween = resetDate.time - currentDate.time
+                val completionStreak =
+                    if (TimeUnit.MILLISECONDS.toDays(timeBetween) == 0L) task.completionStreak + 1
+                    else 0
                 task = Task(
                     task.id,
                     task.task,
                     task.category,
                     TaskStatus.COMPLETED,
-                    Date(System.currentTimeMillis()),
-                    task.resetTime
+                    currentDate,
+                    task.resetTime,
+                    completionStreak
                 )
                 tasksViewModel.updateTask(task)
                 updateTaskStatusString()
@@ -87,8 +105,14 @@ fun DailyTaskItem(_task: Task, tasksViewModel: TasksViewModel) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                Text(
+                    text = "Streak: ${task.completionStreak}",
+                    color = Color(151, 98, 34, 255),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp
+                )
                 Text(
                     text = taskStatusString.value,
                     color = task.status.color,
@@ -96,7 +120,6 @@ fun DailyTaskItem(_task: Task, tasksViewModel: TasksViewModel) {
                     fontSize = 12.sp,
                 )
                 Text(
-                    modifier = Modifier.padding(start = 16.dp),
                     text = "Reset: ${
                         LocalTime.of(task.resetTime.hour, task.resetTime.minute)
                             .format(formatter)

@@ -1,6 +1,7 @@
 package dev.chsr.todo.viewmodels
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,11 +15,13 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.util.Date
 import java.util.EnumMap
+import java.util.concurrent.TimeUnit
 
 class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
     private val taskDao = appDatabase.taskDao()
     private val tasks = MutableStateFlow<List<Task>>(emptyList())
-    private val tasksByCategory = MutableStateFlow(EnumMap<TaskCategory, List<Task>>(TaskCategory::class.java))
+    private val tasksByCategory =
+        MutableStateFlow(EnumMap<TaskCategory, List<Task>>(TaskCategory::class.java))
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun addTask(task: Task) {
@@ -41,7 +44,14 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
                         .atZone(ZoneId.systemDefault())
                         .toInstant()
                 )
-                if (Date().after(resetDate) && task.completedAt.before(resetDate))
+                if (Date().after(resetDate) && task.completedAt.before(resetDate)) { // if day between completedAt and resetDate - streak update, else streak reset
+                    val timeBetween = resetDate.time - task.completedAt.time
+                    val completionStreak =
+                        if (TimeUnit.MILLISECONDS.toDays(timeBetween) > 0) 0
+                        else task.completionStreak
+                    Log.i("days", "${TimeUnit.MILLISECONDS.toDays(timeBetween)}")
+                    Log.i("streak", "$completionStreak")
+
                     updateTask(
                         Task(
                             task.id,
@@ -49,9 +59,12 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
                             task.category,
                             TaskStatus.INCOMPLETE,
                             task.completedAt,
-                            task.resetTime
+                            task.resetTime,
+                            completionStreak
                         )
                     )
+
+                }
             }
         }
     }

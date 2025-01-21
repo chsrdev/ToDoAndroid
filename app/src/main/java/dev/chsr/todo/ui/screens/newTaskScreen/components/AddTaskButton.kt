@@ -67,7 +67,8 @@ fun AddTaskButton(
                     ),
                     status = TaskStatus.INCOMPLETE,
                     completedAt = Date(System.currentTimeMillis()),
-                    resetTime = resetTime
+                    resetTime = resetTime,
+                    completionStreak = 0
                 )
             )
         },
