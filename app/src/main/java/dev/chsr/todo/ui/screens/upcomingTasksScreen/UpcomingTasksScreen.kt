@@ -1,4 +1,4 @@
-package dev.chsr.todo.ui.screens.dailyTasksScreen
+package dev.chsr.todo.ui.screens.upcomingTasksScreen
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -12,12 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import dev.chsr.todo.models.TaskCategory
-import dev.chsr.todo.ui.screens.dailyTasksScreen.components.DailyTaskItem
+import dev.chsr.todo.ui.screens.upcomingTasksScreen.components.UpcomingTaskItem
 import dev.chsr.todo.viewmodels.TasksViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun DailyTasksScreen(tasksViewModel: TasksViewModel) {
+fun UpcomingTasksScreen(tasksViewModel: TasksViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier
@@ -26,9 +26,9 @@ fun DailyTasksScreen(tasksViewModel: TasksViewModel) {
                 .padding(bottom = 96.dp)
         ) {
             tasksViewModel.updateTasks()
-            val tasks = tasksViewModel.getTasksByCategory(TaskCategory.DAILY)
+            val tasks = tasksViewModel.getTasksByCategory(TaskCategory.UPCOMING)
             items(tasks.size) { index ->
-                DailyTaskItem(tasks[index], tasksViewModel)
+                UpcomingTaskItem(tasks[index], tasksViewModel)
             }
         }
     }

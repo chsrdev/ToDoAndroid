@@ -32,6 +32,14 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
+    fun deleteTask(task: Task) {
+        viewModelScope.launch {
+            taskDao.delete(task)
+            updateTasks()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun updateDailyTasksStatus() {
         tasks.value.forEach { task ->
             if (task.category == TaskCategory.DAILY && task.status == TaskStatus.COMPLETED) {

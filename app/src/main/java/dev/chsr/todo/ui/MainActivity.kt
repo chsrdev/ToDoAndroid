@@ -19,8 +19,8 @@ import dev.chsr.todo.ui.components.DailyTasksButton
 import dev.chsr.todo.ui.components.InProgressTasksButton
 import dev.chsr.todo.ui.components.NewTaskButton
 import dev.chsr.todo.ui.components.UpcomingTasksButton
-import dev.chsr.todo.ui.screens.InProgressTasksScreen
-import dev.chsr.todo.ui.screens.UpcomingTasksScreen
+import dev.chsr.todo.ui.screens.inProgressTasksScreen.InProgressTasksScreen
+import dev.chsr.todo.ui.screens.upcomingTasksScreen.UpcomingTasksScreen
 import dev.chsr.todo.ui.screens.dailyTasksScreen.DailyTasksScreen
 import dev.chsr.todo.ui.screens.newTaskScreen.NewTaskScreen
 import dev.chsr.todo.ui.theme.ToDoTheme
