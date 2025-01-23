@@ -45,17 +45,15 @@ fun UpcomingTaskItem(task: Task, tasksViewModel: TasksViewModel) {
             isDeleted.value = true
         }
     ) {
-        Column(
-            modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 2.dp)
-        ) {
-            Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = task.task,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                textAlign = TextAlign.Center
-            )
-        }
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp),
+            text = task.task,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
