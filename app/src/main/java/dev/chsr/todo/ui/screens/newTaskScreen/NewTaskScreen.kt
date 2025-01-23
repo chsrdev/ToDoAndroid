@@ -70,7 +70,7 @@ fun NewTaskScreen(tasksViewModel: TasksViewModel = viewModel()) {
             }
             Spacer(modifier = Modifier.height(3.dp))
             AddTaskButton(
-                taskText.value,
+                taskText,
                 category.value,
                 resetTime.value,
                 addTaskButtonBackgroundColor,

@@ -16,8 +16,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +33,7 @@ import java.util.Date
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddTaskButton(
-    taskText: String,
+    taskText: MutableState<String>,
     category: String,
     resetTime: LocalTime,
     backgroundColor: MutableState<Color>,
@@ -45,7 +43,8 @@ fun AddTaskButton(
         targetValue = backgroundColor.value,
         animationSpec = tween(
             durationMillis = 1000
-        )
+        ),
+        label = "Add task button color animation"
     )
     Button(
         modifier = Modifier.fillMaxWidth(),
@@ -54,14 +53,14 @@ fun AddTaskButton(
             contentColor = Color.White
         ),
         onClick = {
-            if (category == "Category" || taskText.isEmpty()) {
+            if (category == "Category" || taskText.value.isEmpty()) {
                 backgroundColor.value = Color.Red
                 return@Button
             }
             backgroundColor.value = DarkGreen
             tasksViewModel.addTask(
                 Task(
-                    task = taskText,
+                    task = taskText.value,
                     category = TaskCategory.valueOf(
                         category.uppercase().split(" ").joinToString("_")
                     ),
@@ -71,6 +70,7 @@ fun AddTaskButton(
                     completionStreak = 0
                 )
             )
+            taskText.value = ""
         },
         shape = RoundedCornerShape(8.dp)
     ) {
