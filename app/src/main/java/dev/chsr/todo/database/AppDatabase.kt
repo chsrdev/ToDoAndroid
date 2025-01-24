@@ -5,12 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import dev.chsr.todo.models.Task
+import dev.chsr.todo.models.DailyTask
+import dev.chsr.todo.models.UpcomingTask
 
-@Database(entities = [Task::class], version = 3, exportSchema = false)
+@Database(entities = [DailyTask::class, UpcomingTask::class], version = 4, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
-    abstract fun taskDao(): TaskDao
+    abstract fun dailyTaskDao(): DailyTaskDao
+    abstract fun upcomingTaskDao(): UpcomingTaskDao
 
     companion object {
         fun getInstance(context: Context): AppDatabase {

@@ -22,9 +22,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.chsr.todo.models.DailyTask
 import dev.chsr.todo.models.Task
 import dev.chsr.todo.models.TaskCategory
 import dev.chsr.todo.models.TaskStatus
+import dev.chsr.todo.models.UpcomingTask
 import dev.chsr.todo.ui.theme.DarkGreen
 import dev.chsr.todo.viewmodels.TasksViewModel
 import java.time.LocalTime
@@ -58,18 +60,25 @@ fun AddTaskButton(
                 return@Button
             }
             backgroundColor.value = DarkGreen
-            tasksViewModel.addTask(
-                Task(
-                    task = taskText.value,
-                    category = TaskCategory.valueOf(
-                        category.uppercase().split(" ").joinToString("_")
-                    ),
-                    status = TaskStatus.INCOMPLETE,
-                    completedAt = Date(System.currentTimeMillis()),
-                    resetTime = resetTime,
-                    completionStreak = 0
+            val taskCategory = TaskCategory.valueOf(category.uppercase())
+            if (taskCategory == TaskCategory.DAILY) {
+                tasksViewModel.addTask(
+                    DailyTask(
+                        task = taskText.value,
+                        status = TaskStatus.INCOMPLETE,
+                        completedAt = Date(System.currentTimeMillis()),
+                        resetTime = resetTime,
+                        completionStreak = 0
+                    )
                 )
-            )
+            }
+            else if (taskCategory == TaskCategory.UPCOMING) {
+                tasksViewModel.addTask(
+                    UpcomingTask(
+                        task = taskText.value
+                    )
+                )
+            }
             taskText.value = ""
         },
         shape = RoundedCornerShape(8.dp)

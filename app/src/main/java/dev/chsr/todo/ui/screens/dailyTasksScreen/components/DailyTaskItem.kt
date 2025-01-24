@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import dev.chsr.todo.models.Task
+import dev.chsr.todo.models.DailyTask
 import dev.chsr.todo.models.TaskStatus
 import dev.chsr.todo.viewmodels.TasksViewModel
 import java.time.LocalDateTime
@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun DailyTaskItem(_task: Task, tasksViewModel: TasksViewModel) {
+fun DailyTaskItem(_task: DailyTask, tasksViewModel: TasksViewModel) {
     val taskStatusString = remember { mutableStateOf("") }
     val formatter = DateTimeFormatter.ofPattern("HH:mm")
     var task = _task
@@ -77,10 +77,9 @@ fun DailyTaskItem(_task: Task, tasksViewModel: TasksViewModel) {
                 val completionStreak =
                     if (TimeUnit.MILLISECONDS.toDays(timeBetween) == 0L) task.completionStreak + 1
                     else 0
-                task = Task(
+                task = DailyTask(
                     task.id,
                     task.task,
-                    task.category,
                     TaskStatus.COMPLETED,
                     currentDate,
                     task.resetTime,

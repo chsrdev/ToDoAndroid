@@ -25,8 +25,8 @@ fun UpcomingTasksScreen(tasksViewModel: TasksViewModel) {
                 .offset(0.dp, 15.dp)
                 .padding(bottom = 96.dp)
         ) {
-            tasksViewModel.updateTasks()
-            val tasks = tasksViewModel.getTasksByCategory(TaskCategory.UPCOMING)
+            val tasks = tasksViewModel.getUpcomingTasks()
+
             items(tasks.size) { index ->
                 UpcomingTaskItem(tasks[index], tasksViewModel)
             }

@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import dev.chsr.todo.R
 import dev.chsr.todo.ui.theme.DarkBlue
 import dev.chsr.todo.ui.theme.DarkGreen
-import dev.chsr.todo.ui.theme.DarkMagenta
 
 
 @Composable

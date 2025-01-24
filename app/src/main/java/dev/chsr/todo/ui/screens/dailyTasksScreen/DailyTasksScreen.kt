@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import dev.chsr.todo.models.TaskCategory
 import dev.chsr.todo.ui.screens.dailyTasksScreen.components.DailyTaskItem
 import dev.chsr.todo.viewmodels.TasksViewModel
 
@@ -25,8 +24,7 @@ fun DailyTasksScreen(tasksViewModel: TasksViewModel) {
                 .offset(0.dp, 15.dp)
                 .padding(bottom = 96.dp)
         ) {
-            tasksViewModel.updateTasks()
-            val tasks = tasksViewModel.getTasksByCategory(TaskCategory.DAILY)
+            val tasks = tasksViewModel.getDailyTasks()
             items(tasks.size) { index ->
                 DailyTaskItem(tasks[index], tasksViewModel)
             }

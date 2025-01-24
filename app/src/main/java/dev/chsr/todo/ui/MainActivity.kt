@@ -30,15 +30,17 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        appDatabase = AppDatabase.getInstance(this)
+        val tasksViewModel = TasksViewModel(appDatabase)
+        tasksViewModel.updateTasks()
+
         enableEdgeToEdge()
+
         setContent {
             ToDoTheme {
-                appDatabase = AppDatabase.getInstance(this)
-                val navController = rememberNavController()
-                val tasksViewModel = TasksViewModel(appDatabase)
-                tasksViewModel.updateTasks()
-
                 Box(modifier = Modifier.fillMaxSize()) {
+                    val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "new") {
                         composable(route = "new") { NewTaskScreen(tasksViewModel) }
                         composable(route = "daily") { DailyTasksScreen(tasksViewModel) }
