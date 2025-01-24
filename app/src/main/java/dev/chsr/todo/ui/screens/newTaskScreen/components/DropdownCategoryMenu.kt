@@ -43,6 +43,5 @@ fun DropdownCategoryMenu(
     ) {
         DropdownCategoryItem("Daily", R.drawable.calendar_icon, DarkGreen, choice, expanded)
         DropdownCategoryItem("Upcoming", R.drawable.timer_icon, DarkBlue, choice, expanded)
-        DropdownCategoryItem("In progress", R.drawable.progress_icon, DarkMagenta, choice, expanded)
     }
 }

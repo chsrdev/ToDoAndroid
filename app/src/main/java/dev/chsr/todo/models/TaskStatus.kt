@@ -6,6 +6,5 @@ import dev.chsr.todo.ui.theme.DarkMagenta
 
 enum class TaskStatus(val status: String, val color: Color) {
     COMPLETED("COMPLETED", DarkGreen),
-    INCOMPLETE("INCOMPLETE", DarkMagenta),
-    DELETED("DELETED", Color.Red)
+    INCOMPLETE("INCOMPLETE", DarkMagenta)
 }

@@ -16,13 +16,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import dev.chsr.todo.database.AppDatabase
 import dev.chsr.todo.ui.components.DailyTasksButton
-import dev.chsr.todo.ui.components.InProgressTasksButton
 import dev.chsr.todo.ui.components.NewTaskButton
 import dev.chsr.todo.ui.components.UpcomingTasksButton
-import dev.chsr.todo.ui.screens.inProgressTasksScreen.InProgressTasksScreen
-import dev.chsr.todo.ui.screens.upcomingTasksScreen.UpcomingTasksScreen
 import dev.chsr.todo.ui.screens.dailyTasksScreen.DailyTasksScreen
 import dev.chsr.todo.ui.screens.newTaskScreen.NewTaskScreen
+import dev.chsr.todo.ui.screens.upcomingTasksScreen.UpcomingTasksScreen
 import dev.chsr.todo.ui.theme.ToDoTheme
 import dev.chsr.todo.viewmodels.TasksViewModel
 
@@ -45,7 +43,6 @@ class MainActivity : ComponentActivity() {
                         composable(route = "new") { NewTaskScreen(tasksViewModel) }
                         composable(route = "daily") { DailyTasksScreen(tasksViewModel) }
                         composable(route = "upcoming") { UpcomingTasksScreen(tasksViewModel) }
-                        composable(route = "inProgress") { InProgressTasksScreen(tasksViewModel) }
                     }
                     Row(
                         modifier = Modifier.align(Alignment.BottomCenter),
@@ -53,7 +50,6 @@ class MainActivity : ComponentActivity() {
                         NewTaskButton(navController)
                         DailyTasksButton(navController)
                         UpcomingTasksButton(navController)
-                        InProgressTasksButton(navController)
                     }
                 }
             }
