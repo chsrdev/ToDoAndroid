@@ -1,5 +1,7 @@
 package dev.chsr.todo.ui.screens.dailyTasksScreen.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,11 +31,17 @@ import java.util.Calendar
 import java.util.Date
 import java.util.concurrent.TimeUnit
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DailyTaskItem(_task: DailyTask, tasksViewModel: TasksViewModel) {
     val taskStatusString = remember { mutableStateOf("") }
     val formatter = DateTimeFormatter.ofPattern("HH:mm")
+    val isSettingsOpened = remember { mutableStateOf(false) }
+    val isDeleted = remember { mutableStateOf(false) }
     var task = _task
+
+    if (isDeleted.value)
+        return
 
     fun updateTaskStatusString() {
         taskStatusString.value = task.status.status.lowercase().replaceFirstChar { it.uppercase() }
@@ -51,42 +59,55 @@ fun DailyTaskItem(_task: DailyTask, tasksViewModel: TasksViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .combinedClickable(
+                onLongClick = {
+                    isSettingsOpened.value = !isSettingsOpened.value
+                },
+                onClick = {
+                    if (task.status != TaskStatus.COMPLETED) {
+                        val resetDate = Date.from(
+                            LocalDateTime
+                                .now()
+                                .withHour(task.resetTime.hour)
+                                .withMinute(task.resetTime.minute)
+                                .withSecond(0)
+                                .withNano(0)
+                                .atZone(ZoneId.systemDefault())
+                                .toInstant()
+                        )
+                        val currentDate = Date(System.currentTimeMillis())
+                        val timeBetween = resetDate.time - currentDate.time
+                        val completionStreak =
+                            if (TimeUnit.MILLISECONDS.toDays(timeBetween) == 0L) task.completionStreak + 1
+                            else 0
+                        task = DailyTask(
+                            task.id,
+                            task.task,
+                            TaskStatus.COMPLETED,
+                            currentDate,
+                            task.resetTime,
+                            completionStreak
+                        )
+                        tasksViewModel.updateTask(task)
+                        updateTaskStatusString()
+                    }
+                }
+            ),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(8.dp),
         colors = CardDefaults.cardColors(
             contentColor = Color.Black,
             containerColor = Color.White
         ),
-        onClick = {
-            if (task.status != TaskStatus.COMPLETED) {
-                val resetDate = Date.from(
-                    LocalDateTime.now()
-                        .withHour(task.resetTime.hour)
-                        .withMinute(task.resetTime.minute)
-                        .withSecond(0)
-                        .withNano(0)
-                        .atZone(ZoneId.systemDefault())
-                        .toInstant()
-                )
-                val currentDate = Date(System.currentTimeMillis())
-                val timeBetween = resetDate.time - currentDate.time
-                val completionStreak =
-                    if (TimeUnit.MILLISECONDS.toDays(timeBetween) == 0L) task.completionStreak + 1
-                    else 0
-                task = DailyTask(
-                    task.id,
-                    task.task,
-                    TaskStatus.COMPLETED,
-                    currentDate,
-                    task.resetTime,
-                    completionStreak
-                )
-                tasksViewModel.updateTask(task)
-                updateTaskStatusString()
-            }
-        }
+//        onClick = {
+//
+//        }
     ) {
+        if (isSettingsOpened.value) {
+            DailyTaskItemSettings(task, isDeleted, tasksViewModel)
+            return@Card
+        }
         Column(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 2.dp)
         ) {
@@ -128,4 +149,3 @@ fun DailyTaskItem(_task: DailyTask, tasksViewModel: TasksViewModel) {
         }
     }
 }
-
