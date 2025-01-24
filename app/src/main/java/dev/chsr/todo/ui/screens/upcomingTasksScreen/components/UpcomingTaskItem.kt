@@ -1,7 +1,5 @@
 package dev.chsr.todo.ui.screens.upcomingTasksScreen.components
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +19,6 @@ import dev.chsr.todo.models.Task
 import dev.chsr.todo.viewmodels.TasksViewModel
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun UpcomingTaskItem(task: Task, tasksViewModel: TasksViewModel) {
     val isDeleted = remember { mutableStateOf(false) }

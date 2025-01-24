@@ -1,8 +1,6 @@
 package dev.chsr.todo.ui.screens.newTaskScreen.components
 
 import android.app.TimePickerDialog
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,7 +18,6 @@ import androidx.compose.ui.unit.sp
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TaskResetTimePicker(resetTime: MutableState<LocalTime>) {
     val context = LocalContext.current

@@ -1,7 +1,5 @@
 package dev.chsr.todo.ui.screens.newTaskScreen
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -29,7 +27,6 @@ import dev.chsr.todo.ui.screens.newTaskScreen.components.TaskTextField
 import dev.chsr.todo.viewmodels.TasksViewModel
 import java.time.LocalTime
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NewTaskScreen(tasksViewModel: TasksViewModel = viewModel()) {
     val taskText = remember { mutableStateOf("") }

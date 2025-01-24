@@ -1,7 +1,5 @@
 package dev.chsr.todo.ui.screens.dailyTasksScreen
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +12,6 @@ import androidx.compose.ui.unit.dp
 import dev.chsr.todo.ui.screens.dailyTasksScreen.components.DailyTaskItem
 import dev.chsr.todo.viewmodels.TasksViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DailyTasksScreen(tasksViewModel: TasksViewModel) {
     Box(modifier = Modifier.fillMaxSize()) {

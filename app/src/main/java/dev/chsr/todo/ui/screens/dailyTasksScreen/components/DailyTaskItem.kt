@@ -1,7 +1,5 @@
 package dev.chsr.todo.ui.screens.dailyTasksScreen.components
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,7 +29,6 @@ import java.util.Calendar
 import java.util.Date
 import java.util.concurrent.TimeUnit
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DailyTaskItem(_task: DailyTask, tasksViewModel: TasksViewModel) {
     val taskStatusString = remember { mutableStateOf("") }

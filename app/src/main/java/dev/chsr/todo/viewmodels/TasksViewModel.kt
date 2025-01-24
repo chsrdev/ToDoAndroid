@@ -1,7 +1,5 @@
 package dev.chsr.todo.viewmodels
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.chsr.todo.database.AppDatabase
@@ -22,7 +20,6 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
     private val upcomingTasks = MutableStateFlow<List<UpcomingTask>>(emptyList())
     private val dailyTasks = MutableStateFlow<List<DailyTask>>(emptyList())
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun addTask(task: Task) {
         viewModelScope.launch {
             if(task is DailyTask) dailyTaskDao.insert(task)
@@ -31,7 +28,6 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun deleteTask(task: Task) {
         viewModelScope.launch {
             if(task is DailyTask) dailyTaskDao.delete(task)
@@ -40,7 +36,6 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun updateDailyTasksStatus() {
         dailyTasks.value.forEach { task ->
             if (task.status == TaskStatus.COMPLETED) {
@@ -74,7 +69,6 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun updateTask(task: Task) {
         viewModelScope.launch {
             if(task is DailyTask) dailyTaskDao.updateTask(task)
@@ -83,7 +77,6 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun updateTasks() {
         viewModelScope.launch {
             dailyTasks.value = dailyTaskDao.getTasks()
@@ -92,7 +85,6 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getDailyTasks(): List<DailyTask> {
         viewModelScope.launch {
             updateTasks()
@@ -100,7 +92,6 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
         return dailyTasks.value
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getUpcomingTasks(): List<UpcomingTask> {
         viewModelScope.launch {
             updateTasks()

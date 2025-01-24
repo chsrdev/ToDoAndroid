@@ -1,7 +1,5 @@
 package dev.chsr.todo.ui.screens.newTaskScreen.components
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Row
@@ -23,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dev.chsr.todo.models.DailyTask
-import dev.chsr.todo.models.Task
 import dev.chsr.todo.models.TaskCategory
 import dev.chsr.todo.models.TaskStatus
 import dev.chsr.todo.models.UpcomingTask
@@ -32,7 +29,6 @@ import dev.chsr.todo.viewmodels.TasksViewModel
 import java.time.LocalTime
 import java.util.Date
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AddTaskButton(
     taskText: MutableState<String>,
