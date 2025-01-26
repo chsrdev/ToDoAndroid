@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.chsr.todo.database.AppDatabase
 import dev.chsr.todo.models.DailyTask
+import dev.chsr.todo.models.DayTask
 import dev.chsr.todo.models.Task
 import dev.chsr.todo.models.TaskStatus
 import dev.chsr.todo.models.UpcomingTask
@@ -17,21 +18,29 @@ import java.util.concurrent.TimeUnit
 class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
     private val dailyTaskDao = appDatabase.dailyTaskDao()
     private val upcomingTaskDao = appDatabase.upcomingTaskDao()
+    private val dayTaskDao = appDatabase.dayTaskDao()
     private val upcomingTasks = MutableStateFlow<List<UpcomingTask>>(emptyList())
     private val dailyTasks = MutableStateFlow<List<DailyTask>>(emptyList())
+    private val dayTasks = MutableStateFlow<List<DayTask>>(emptyList())
 
     fun addTask(task: Task) {
         viewModelScope.launch {
-            if(task is DailyTask) dailyTaskDao.insert(task)
-            if(task is UpcomingTask) upcomingTaskDao.insert(task)
+            when (task) {
+                is DailyTask -> dailyTaskDao.insert(task)
+                is UpcomingTask -> upcomingTaskDao.insert(task)
+                is DayTask -> dayTaskDao.insert(task)
+            }
             updateTasks()
         }
     }
 
     fun deleteTask(task: Task) {
         viewModelScope.launch {
-            if(task is DailyTask) dailyTaskDao.delete(task)
-            if(task is UpcomingTask) upcomingTaskDao.delete(task)
+            when (task) {
+                is DailyTask -> dailyTaskDao.delete(task)
+                is UpcomingTask -> upcomingTaskDao.delete(task)
+                is DayTask -> dayTaskDao.delete(task)
+            }
             updateTasks()
         }
     }
@@ -71,8 +80,11 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
 
     fun updateTask(task: Task) {
         viewModelScope.launch {
-            if(task is DailyTask) dailyTaskDao.updateTask(task)
-            if(task is UpcomingTask) upcomingTaskDao.updateTask(task)
+            when (task) {
+                is DailyTask -> dailyTaskDao.updateTask(task)
+                is UpcomingTask -> upcomingTaskDao.updateTask(task)
+                is DayTask -> dayTaskDao.updateTask(task)
+            }
             updateTasks()
         }
     }
@@ -81,6 +93,7 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
         viewModelScope.launch {
             dailyTasks.value = dailyTaskDao.getTasks()
             upcomingTasks.value = upcomingTaskDao.getTasks()
+            dayTasks.value = dayTaskDao.getTasks()
             updateDailyTasksStatus()
         }
     }
@@ -97,5 +110,12 @@ class TasksViewModel(appDatabase: AppDatabase) : ViewModel() {
             updateTasks()
         }
         return upcomingTasks.value
+    }
+
+    fun getDayTasks(): List<DayTask> {
+        viewModelScope.launch {
+            updateTasks()
+        }
+        return dayTasks.value
     }
 }

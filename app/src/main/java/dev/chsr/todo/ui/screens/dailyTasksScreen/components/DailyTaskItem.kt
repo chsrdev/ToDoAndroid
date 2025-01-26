@@ -100,9 +100,6 @@ fun DailyTaskItem(_task: DailyTask, tasksViewModel: TasksViewModel) {
             contentColor = Color.Black,
             containerColor = Color.White
         ),
-//        onClick = {
-//
-//        }
     ) {
         if (isSettingsOpened.value) {
             DailyTaskItemSettings(task, isDeleted, tasksViewModel)

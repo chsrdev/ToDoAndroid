@@ -15,11 +15,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import dev.chsr.todo.models.DailyTask
-import dev.chsr.todo.ui.theme.DarkMagenta
 import dev.chsr.todo.viewmodels.TasksViewModel
 
 @Composable
-fun DailyTaskItemSettings(task: DailyTask, isDeleted: MutableState<Boolean>, tasksViewModel: TasksViewModel) {
+fun DailyTaskItemSettings(
+    task: DailyTask,
+    isDeleted: MutableState<Boolean>,
+    tasksViewModel: TasksViewModel
+) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {

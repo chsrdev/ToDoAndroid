@@ -1,7 +1,5 @@
 package dev.chsr.todo.database
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.room.TypeConverter
 import dev.chsr.todo.models.TaskStatus
 import java.time.LocalTime
@@ -32,13 +30,11 @@ class Converters {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
     fun fromLocalTime(localTime: LocalTime): String {
         return localTime.format(formatter)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
     fun toLocalTime(timeString: String): LocalTime {
         return LocalTime.parse(timeString, formatter)
