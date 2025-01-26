@@ -29,7 +29,7 @@ fun UpcomingTaskItem(task: Task, tasksViewModel: TasksViewModel) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 16.dp),
+            .padding(horizontal = 18.dp, vertical = 8.dp),
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.cardElevation(8.dp),
         colors = CardDefaults.cardColors(
