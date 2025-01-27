@@ -8,7 +8,10 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -36,12 +39,12 @@ class MainActivity : ComponentActivity() {
         appDatabase = AppDatabase.getInstance(this)
         val tasksViewModel = TasksViewModel(appDatabase)
         tasksViewModel.updateTasks()
-
+        
         enableEdgeToEdge()
 
         setContent {
             ToDoTheme {
-                Box(modifier = Modifier.fillMaxSize()) {
+                Box(modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.displayCutout)) {
                     val navController = rememberNavController()
                     NavHost(navController = navController, startDestination = "new") {
                         composable(route = "new") { NewTaskScreen(tasksViewModel) }
