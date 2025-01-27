@@ -30,7 +30,7 @@ fun DayTasksScreen(tasksViewModel: TasksViewModel) {
                 .offset(0.dp, 15.dp)
                 .padding(bottom = 96.dp)
         ) {
-            val tasks = tasksViewModel.getDayTasks()
+            val tasks = tasksViewModel.getDayTasks().sortedBy { it.day }
             val now = LocalDate.now()
             val tasksByDate = LinkedHashMap<Pair<String, Color>, List<DayTask>>()
             tasksByDate[Pair("Outdated", DarkMagenta)] = tasks.filter {
