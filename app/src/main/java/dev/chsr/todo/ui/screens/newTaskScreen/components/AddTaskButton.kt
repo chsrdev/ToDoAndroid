@@ -27,20 +27,20 @@ import dev.chsr.todo.models.TaskStatus
 import dev.chsr.todo.models.UpcomingTask
 import dev.chsr.todo.ui.theme.DarkGreen
 import dev.chsr.todo.viewmodels.TasksViewModel
+import java.time.LocalDate
 import java.time.LocalTime
-import java.util.Calendar
+import java.time.ZoneId
 import java.util.Date
 
 @Composable
 fun AddTaskButton(
     taskText: MutableState<String>,
-    dateText: MutableState<String>,
+    dateText: MutableState<LocalDate>,
     category: String,
     resetTime: LocalTime,
     backgroundColor: MutableState<Color>,
     tasksViewModel: TasksViewModel
 ) {
-    val dateRegex = """^([0]?[1-9]|[1][0-2])/([0]?[1-9]|[12][0-9]|3[01])/(\d{2}|\d{4})${'$'}""".toRegex()
     val bgColor by animateColorAsState(
         targetValue = backgroundColor.value,
         animationSpec = tween(
@@ -55,10 +55,7 @@ fun AddTaskButton(
             contentColor = Color.White
         ),
         onClick = {
-            if (category == "Category" || taskText.value.isEmpty() || (category == "Day" && !dateRegex.matches(
-                    dateText.value
-                ))
-            ) {
+            if (category == "Category" || taskText.value.isEmpty()) {
                 backgroundColor.value = Color.Red
                 return@Button
             }
@@ -86,28 +83,17 @@ fun AddTaskButton(
                 }
 
                 TaskCategory.DAY -> {
-                    val x = dateText.value.split('/')
-                    val year = if (x[2].toInt() >= 1000) x[2].toInt() else x[2].toInt()-2000
-                    val calendar = Calendar.getInstance().apply {
-                        set(Calendar.YEAR, year)
-                        set(Calendar.MONTH, x[0].toInt() - 1)
-                        set(Calendar.DAY_OF_MONTH, x[1].toInt())
-                        set(Calendar.HOUR_OF_DAY, 0)
-                        set(Calendar.MINUTE, 0)
-                        set(Calendar.SECOND, 0)
-                        set(Calendar.MILLISECOND, 0)
-                    }
-
                     tasksViewModel.addTask(
                         DayTask(
                             task = taskText.value,
-                            day = calendar.time
+                            day = Date.from(
+                                dateText.value.atStartOfDay(ZoneId.systemDefault()).toInstant()
+                            )
                         )
                     )
                 }
             }
             taskText.value = ""
-            dateText.value = ""
         },
         shape = RoundedCornerShape(8.dp)
     ) {

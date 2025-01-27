@@ -21,7 +21,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.chsr.todo.ui.screens.newTaskScreen.components.AddTaskButton
-import dev.chsr.todo.ui.screens.newTaskScreen.components.DateTextField
+import dev.chsr.todo.ui.screens.newTaskScreen.components.DatePicker
 import dev.chsr.todo.ui.screens.newTaskScreen.components.DropdownCategoryMenu
 import dev.chsr.todo.ui.screens.newTaskScreen.components.TaskResetTimePicker
 import dev.chsr.todo.ui.screens.newTaskScreen.components.TaskTextField
@@ -31,9 +31,8 @@ import java.time.LocalTime
 
 @Composable
 fun NewTaskScreen(tasksViewModel: TasksViewModel = viewModel()) {
-    val now = LocalDate.now()
     val taskText = remember { mutableStateOf("") }
-    val dateText = remember { mutableStateOf("${now.monthValue}/${now.dayOfMonth}/${now.year}") }
+    val dateText = remember { mutableStateOf(LocalDate.now()) }
     val category = remember { mutableStateOf("Category") }
     val resetTime = remember { mutableStateOf(LocalTime.of(0, 0)) }
     val focusRequester = FocusRequester()
@@ -70,11 +69,7 @@ fun NewTaskScreen(tasksViewModel: TasksViewModel = viewModel()) {
                 TaskResetTimePicker(resetTime)
             } else if (category.value == "Day") {
                 Spacer(modifier = Modifier.height(3.dp))
-                DateTextField(
-                    dateText, Modifier
-                        .fillMaxWidth()
-                        .focusRequester(focusRequester)
-                )
+                DatePicker(dateText)
             }
             Spacer(modifier = Modifier.height(3.dp))
             AddTaskButton(

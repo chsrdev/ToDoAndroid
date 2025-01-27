@@ -25,7 +25,7 @@ import java.util.Locale
 @Composable
 fun DayTaskItem(task: DayTask, tasksViewModel: TasksViewModel) {
     val isDeleted = remember { mutableStateOf(false) }
-    val dateFormat = SimpleDateFormat("MMM / dd / yyyy", Locale.getDefault())
+    val dateFormat = SimpleDateFormat("MMM dd yyyy", Locale.getDefault())
     if (isDeleted.value)
         return
 
